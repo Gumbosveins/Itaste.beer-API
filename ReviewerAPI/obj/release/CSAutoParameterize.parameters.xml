@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="ReviewConnectionString-Web.config Connection String" description="ReviewConnectionString Connection String used in web.config by the application to access the database." defaultValue="Data Source=tcp:gzc7ae1c5o.database.windows.net;Initial Catalog=Review;Persist Security Info=True;User ID=FanamentsDB@gzc7ae1c5o;Password=.Peningar127" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Taste\\itasteapi\\ReviewerAPI\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='ReviewConnectionString']/@connectionString" />
+  </parameter>
+  <parameter name="TasterConnectionString-Web.config Connection String" description="TasterConnectionString Connection String used in web.config by the application to access the database." defaultValue="Data Source=tasterapp.database.windows.net;Initial Catalog=Taster;Persist Security Info=True;User ID=TasterApp;Password=Kraftur#737" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Taste\\itasteapi\\ReviewerAPI\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='TasterConnectionString']/@connectionString" />
+  </parameter>
+</parameters>

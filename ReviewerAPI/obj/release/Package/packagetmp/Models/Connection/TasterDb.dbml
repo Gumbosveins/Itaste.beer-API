@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Taster" Class="TasterDbDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=tasterapp.database.windows.net;Initial Catalog=Taster;Persist Security Info=True;User ID=TasterApp" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="TasterConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Room2ReviewType" Member="Room2ReviewTypes">
+    <Type Name="Room2ReviewType">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RoomId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ReviewTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MaxValue" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="ReviewType_Room2ReviewType" Member="ReviewType" ThisKey="ReviewTypeId" OtherKey="Id" Type="ReviewType" IsForeignKey="true" />
+      <Association Name="Room_Room2ReviewType" Member="Room" ThisKey="RoomId" OtherKey="Id" Type="Room" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[User]" Member="Users">
+    <Type Name="User">
+      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RoomId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AvatarUrl" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="IsOwner" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="User_BeverageReview" Member="BeverageReviews" ThisKey="Id" OtherKey="UserId" Type="BeverageReview" />
+      <Association Name="Room_User" Member="Room" ThisKey="RoomId" OtherKey="Id" Type="Room" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ReviewPart" Member="ReviewParts">
+    <Type Name="ReviewPart">
+      <Column Name="Id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BeverageReviewId" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="ReviewTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Score" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Association Name="ReviewType_ReviewPart" Member="ReviewType" ThisKey="ReviewTypeId" OtherKey="Id" Type="ReviewType" IsForeignKey="true" />
+      <Association Name="BeverageReview_ReviewPart" Member="BeverageReview" ThisKey="BeverageReviewId" OtherKey="Id" Type="BeverageReview" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Beverage" Member="Beverages">
+    <Type Name="Beverage">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="BreweryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AlcoholPercentage" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="IBU" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="MajorGroup" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ImageUrlSm" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ImageUrlMed" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="LableSm" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="LableMed" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Accepted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IpAddress" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="UtappedRating" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Beverage_Room2Beverage" Member="Room2Beverages" ThisKey="Id" OtherKey="BeverageId" Type="Room2Beverage" />
+      <Association Name="Brewery_Beverage" Member="Brewery" ThisKey="BreweryId" OtherKey="Id" Type="Brewery" IsForeignKey="true" />
+      <Association Name="BeverageGroup_Beverage" Member="BeverageGroup" ThisKey="MajorGroup" OtherKey="Id" Type="BeverageGroup" IsForeignKey="true" />
+      <Association Name="BeverageType_Beverage" Member="BeverageType" ThisKey="Type" OtherKey="Id" Type="BeverageType" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Brewery" Member="Breweries">
+    <Type Name="Brewery">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Logo" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Country" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="Twitter" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Facebook" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="WebPage" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="DateAdded" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Brewery_Beverage" Member="Beverages" ThisKey="Id" OtherKey="BreweryId" Type="Beverage" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BeverageGroup" Member="BeverageGroups">
+    <Type Name="BeverageGroup">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="BeverageGroup_Beverage" Member="Beverages" ThisKey="Id" OtherKey="MajorGroup" Type="Beverage" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BeverageType" Member="BeverageTypes">
+    <Type Name="BeverageType">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="BeverageType_Beverage" Member="Beverages" ThisKey="Id" OtherKey="Type" Type="Beverage" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ReviewType" Member="ReviewTypes">
+    <Type Name="ReviewType">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Accepted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IpAddress" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="DateAdded" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Abbr" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="ReviewType_Room2ReviewType" Member="Room2ReviewTypes" ThisKey="Id" OtherKey="ReviewTypeId" Type="Room2ReviewType" />
+      <Association Name="ReviewType_ReviewPart" Member="ReviewParts" ThisKey="Id" OtherKey="ReviewTypeId" Type="ReviewPart" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BeverageReview" Member="BeverageReviews">
+    <Type Name="BeverageReview">
+      <Column Name="Id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="BeverageId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RoomId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TotalScore" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Comment" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Association Name="BeverageReview_ReviewPart" Member="ReviewParts" ThisKey="Id" OtherKey="BeverageReviewId" Type="ReviewPart" />
+      <Association Name="User_BeverageReview" Member="User" ThisKey="UserId" OtherKey="Id" Type="User" IsForeignKey="true" />
+      <Association Name="Room_BeverageReview" Member="Room" ThisKey="RoomId" OtherKey="Id" Type="Room" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Room2Beverage" Member="Room2Beverages">
+    <Type Name="Room2Beverage">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RoomId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BeverageId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FinalScore" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ReviewFinished" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Beverage_Room2Beverage" Member="Beverage" ThisKey="BeverageId" OtherKey="Id" Type="Beverage" IsForeignKey="true" />
+      <Association Name="Room_Room2Beverage" Member="Room" ThisKey="RoomId" OtherKey="Id" Type="Room" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Room" Member="Rooms">
+    <Type Name="Room">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Code" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Pin" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RoomType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Owner" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="BlindRevealCode" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="Room_Room2ReviewType" Member="Room2ReviewTypes" ThisKey="Id" OtherKey="RoomId" Type="Room2ReviewType" />
+      <Association Name="Room_User" Member="Users" ThisKey="Id" OtherKey="RoomId" Type="User" />
+      <Association Name="Room_BeverageReview" Member="BeverageReviews" ThisKey="Id" OtherKey="RoomId" Type="BeverageReview" />
+      <Association Name="Room_Room2Beverage" Member="Room2Beverages" ThisKey="Id" OtherKey="RoomId" Type="Room2Beverage" />
+    </Type>
+  </Table>
+</Database>
