@@ -17,7 +17,7 @@ namespace ReviewerAPI.BeerHubs
         IHubContext hub = GlobalHost.ConnectionManager.GetHubContext<beerhub>();
         public void Hello()
         {
-            hub.Clients.Group("Room:" + "WNQZ").Hello();
+            hub.Clients.Group("Room:" + "LHYU").Hello();
         }
 
         public string JoinRoom(string roomCode)

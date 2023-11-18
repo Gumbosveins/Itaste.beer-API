@@ -175,10 +175,11 @@ namespace ReviewerAPI.Controllers
 
 
         [HttpGet, Route("TestSignalR")]
-        public void TestSignalR()
+        public void TestSignalR(string code, string name)
         {
             beerhub hub = new beerhub();
-            //hub.Ping("PTLJ");
+            hub.NewUserJoined(code, name, Guid.NewGuid());
+
         }
 
         private string GetUser_IP()
