@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 13.25, 14.5" name="TasterDb">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 15.625, 14.5" name="TasterDb">
   <DataContextMoniker Name="/TasterDbDataContext" />
   <nestedChildShapes>
     <classShape Id="53ecf74c-2c46-4d53-bc3f-9ad02cdf77bd" absoluteBounds="5.375, 3, 2, 1.7708968098958329">
@@ -71,7 +71,7 @@
         <elementListCompartment Id="cd9cd9c0-1f3a-412b-b83f-13fa4df7ad56" absoluteBounds="8.015, 6.835, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(8.53125 : 6.375); (8.53125 : 4.34059895833333); (7.375 : 4.34059895833333)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(8.53125 : 6.375); (8.53125 : 4.34059895833333); (7.375 : 4.34059895833333)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/TasterDbDataContext/ReviewType/ReviewType_Room2ReviewType" />
       <nodes>
         <classShapeMoniker Id="54d90883-d573-4ac4-940f-1a911b9c49a5" />
@@ -91,14 +91,14 @@
         <elementListCompartment Id="f4b25c1a-5508-409d-b4ab-6245dbbeb457" absoluteBounds="10.39, 2.335, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(11.6875 : 4.03049967447917); (11.6875 : 4.375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(11.6875 : 4.03049967447917); (11.6875 : 4.375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/TasterDbDataContext/BeverageReview/BeverageReview_ReviewPart" />
       <nodes>
         <classShapeMoniker Id="54aa7347-86df-4cc0-a518-a15eaa707036" />
         <classShapeMoniker Id="e288f933-7121-4622-b3dd-d76e1ad840be" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(7.875 : 1.15625); (11.78125 : 1.15625); (11.78125 : 1.875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(7.875 : 2.35659912109375); (10.375 : 2.35659912109375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/TasterDbDataContext/User/User_BeverageReview" />
       <nodes>
         <classShapeMoniker Id="0a0772da-a1aa-4acd-bbcf-b8289ce60ae8" />
@@ -118,34 +118,34 @@
         <classShapeMoniker Id="2135041d-8d8f-4ca6-b3da-ffe1094c73c8" />
       </nodes>
     </associationConnector>
-    <classShape Id="611e13bf-7653-4b4b-9b1b-e01202488ffa" absoluteBounds="9.125, 1.5, 2, 2.3478011067708335">
+    <classShape Id="611e13bf-7653-4b4b-9b1b-e01202488ffa" absoluteBounds="13.375, 1.125, 2, 2.3478011067708335">
       <DataClassMoniker Name="/TasterDbDataContext/Room" />
       <nestedChildShapes>
-        <elementListCompartment Id="dc235d61-8571-46df-a3f1-a72ce2b4e001" absoluteBounds="9.14, 1.96, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="dc235d61-8571-46df-a3f1-a72ce2b4e001" absoluteBounds="13.39, 1.585, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(9.125 : 3.42390055338542); (7.375 : 3.42390055338542)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(14.375 : 3.47280110677083); (14.375 : 4.20274983723958); (11.7708333333333 : 4.20274983723958 : JumpStart); (11.6041666666667 : 4.20274983723958 : JumpEnd); (7.375 : 4.20274983723958)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/TasterDbDataContext/Room/Room_Room2ReviewType" />
       <nodes>
         <classShapeMoniker Id="611e13bf-7653-4b4b-9b1b-e01202488ffa" />
         <classShapeMoniker Id="53ecf74c-2c46-4d53-bc3f-9ad02cdf77bd" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(9.125 : 2.16909912109375); (7.875 : 2.16909912109375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(13.375 : 1.46875); (7.875 : 1.46875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/TasterDbDataContext/Room/Room_User" />
       <nodes>
         <classShapeMoniker Id="611e13bf-7653-4b4b-9b1b-e01202488ffa" />
         <classShapeMoniker Id="0a0772da-a1aa-4acd-bbcf-b8289ce60ae8" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(11.125 : 2.67390055338542); (12.625 : 2.67390055338542); (12.625 : 2.95274983723958); (12.375 : 2.95274983723958)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(13.375 : 2.67390055338542); (12.375 : 2.67390055338542)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/TasterDbDataContext/Room/Room_BeverageReview" />
       <nodes>
         <classShapeMoniker Id="611e13bf-7653-4b4b-9b1b-e01202488ffa" />
         <classShapeMoniker Id="54aa7347-86df-4cc0-a518-a15eaa707036" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(9.125 : 2.91909912109375); (3.125 : 2.91909912109375); (3.125 : 3.875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(13.843748 : 3.47280110677083); (13.843748 : 3.875); (12.625 : 3.875); (12.625 : 4.28049967447917); (11.7708333333333 : 4.28049967447917 : JumpStart); (11.6041666666667 : 4.28049967447917 : JumpEnd); (7.625 : 4.28049967447917); (7.625 : 5.4319477421875); (4.125 : 5.4319477421875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/TasterDbDataContext/Room/Room_Room2Beverage" />
       <nodes>
         <classShapeMoniker Id="611e13bf-7653-4b4b-9b1b-e01202488ffa" />

@@ -62,25 +62,5 @@ namespace ReviewerAPI.BeerHubs
                          };
             hub.Clients.Group("UserRoom:" + roomCode.ToLower()).PushFinalScore(result);
         }
-        
-
-        //OLD
-        public void PushVote(BeerRev vote)
-        {
-            hub.Clients.All.PushVote(vote);
-
-        }
-
-        public void PushBeerStatus(BeerRev beerRev)
-        {
-            hub.Clients.All.PushBeerStatus(beerRev);
-        }
-
-        internal void PushEdit(BeerRev beerRev)
-        {
-            hub.Clients.All.PushEditVote(beerRev);
-        }
-
-
     }
 }

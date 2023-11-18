@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Taster" Class="TasterDbDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=tasterapp.database.windows.net;Initial Catalog=Taster;Persist Security Info=True;User ID=TasterApp" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="TasterConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="WebSettings" ConnectionString="Data Source=tasterapp.database.windows.net;Initial Catalog=Taster;Persist Security Info=True;User ID=TasterApp" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="TasterConnectionString" Provider="Microsoft.Data.SqlClient" />
   <Table Name="dbo.Room2ReviewType" Member="Room2ReviewTypes">
     <Type Name="Room2ReviewType">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />

@@ -184,16 +184,9 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Beer.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Beer.dbml</DependentUpon>
-    </Compile>
     <Compile Include="CacheResp.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Controllers\TasterController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DataAccessLayer\TasterDal.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -250,11 +243,6 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
-    <Content Include="Beer.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>Beer.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Models\Connection\TasterDb.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>TasterDb.designer.cs</LastGenOutput>
@@ -301,11 +289,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Beer.dbml.layout">
-      <DependentUpon>Beer.dbml</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Models\Connection\TasterDb.dbml.layout">
