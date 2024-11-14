@@ -129,11 +129,19 @@ namespace ItbApi.DataAccessLayer
                 List<Beverage> beverages = await GetBeveragesByIds(request.beers.Select(a => a.id));
 
                 int index = 0;
+                var beersToRetry = new List<FinishRoomSettings.Beer>();
                 foreach (var beverage in request.beers)
                 {
                     if (!beverages.Any(a => a.Id == beverage.id))
                     {
                         UnTappedBeerInfo.Root info = await UnTapped.GetBeerInfo(beverage.id);
+
+                        if (info == null)
+                        {
+                            beersToRetry.Add(beverage);
+                            continue;
+                        }
+
                         await this.AddUnTappedBeer(info);
                     }
 
@@ -144,6 +152,33 @@ namespace ItbApi.DataAccessLayer
                         FinalScore = 0,
                         IsLocked = true
                     });
+
+                    index++;
+                    await Task.Delay(3000);
+                }
+
+                foreach (var beverage in beersToRetry)
+                {
+                    if (!beverages.Any(a => a.Id == beverage.id))
+                    {
+                        UnTappedBeerInfo.Root info = await UnTapped.GetBeerInfo(beverage.id);
+
+                        if (info == null)
+                        {
+                            continue;
+                        }
+
+                        await this.AddUnTappedBeer(info);
+                    }
+
+                    room.Room2Beverages.Add(new Room2Beverage()
+                    {
+                        BeverageId = beverage.id,
+                        DisplayOrder = index,
+                        FinalScore = 0,
+                        IsLocked = true
+                    });
+                    await Task.Delay(3000);
 
                     index++;
                 }

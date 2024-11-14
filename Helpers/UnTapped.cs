@@ -40,8 +40,15 @@ namespace ItbApi.Helpers
             HttpHandler httpHandler = new HttpHandler();
             uri = httpHandler.CreateQueryFromObject(uri, "beer/info/" + beerId, requestObj);
             HttpResponseMessage response = await httpHandler.GetAsync(uri);
-
-            return JsonConvert.DeserializeObject<UnTappedBeerInfo.Root>(Encoding.UTF8.GetString(await response.Content.ReadAsByteArrayAsync()));
+            var str = await response.Content.ReadAsByteArrayAsync();
+            try
+            {
+                 return JsonConvert.DeserializeObject<UnTappedBeerInfo.Root>(Encoding.UTF8.GetString(await response.Content.ReadAsByteArrayAsync()));
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
     }
 }
