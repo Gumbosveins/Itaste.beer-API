@@ -10,6 +10,7 @@ namespace ItbApi.DataAccessLayer
         Task<Result> AddReview(AddReviewRequest reqiest);
         Task<Result> AddReviewType(AddNewReviewType request);
         Task AddUnTappedBeer(UnTappedBeerInfo.Root info);
+        Task AddUnTappedBeers(UnTappedBeerSearch.Root info);
         Task<CreateRoomResult> CreateRoom(Room roomToAdd);
         Task<Result> CreateUser(User user);
         Task<Result> DeleteUser(DeleteUserRequest request);

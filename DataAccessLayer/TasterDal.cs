@@ -154,33 +154,6 @@ namespace ItbApi.DataAccessLayer
                     });
 
                     index++;
-                    await Task.Delay(3000);
-                }
-
-                foreach (var beverage in beersToRetry)
-                {
-                    if (!beverages.Any(a => a.Id == beverage.id))
-                    {
-                        UnTappedBeerInfo.Root info = await UnTapped.GetBeerInfo(beverage.id);
-
-                        if (info == null)
-                        {
-                            continue;
-                        }
-
-                        await this.AddUnTappedBeer(info);
-                    }
-
-                    room.Room2Beverages.Add(new Room2Beverage()
-                    {
-                        BeverageId = beverage.id,
-                        DisplayOrder = index,
-                        FinalScore = 0,
-                        IsLocked = true
-                    });
-                    await Task.Delay(3000);
-
-                    index++;
                 }
 
                 List<ReviewType> reviewtypes = Context.ReviewTypes.IncludeAll().Where(a => request.categories.Select(b => b.id).Contains(a.Id)).ToList();
@@ -432,6 +405,101 @@ namespace ItbApi.DataAccessLayer
         {
             List<Brewery> breweries = await Context.Breweries.ToListAsync();
             return breweries;
+        }
+
+        public async Task AddUnTappedBeers(UnTappedBeerSearch.Root info)
+        {
+            var beers = info.response.beers;
+
+            HashSet<int> bIds = Context.Beverages.Select(a => a.Id).ToHashSet();
+            List<BeverageType> types = await GetBeverageTypes();
+            List<BeverageType> typeToAdd = new List<BeverageType>();
+
+            foreach (var beerstyle in info.response.beers.items.GroupBy(a => a.beer.beer_style))
+            {
+                if (!types.Any(a => a.Name == beerstyle.First().beer.beer_style))
+                {
+                    var type = new BeverageType()
+                    {
+                        Name = beerstyle.First().beer.beer_style,
+                        DisplayOrder = 0
+                    };
+                    types.Add(type);
+                    typeToAdd.Add(type);
+                }
+            }
+
+            await this.Context.BeverageTypes.AddRangeAsync(typeToAdd);
+            await this.Context.SaveChangesAsync();
+
+            types = await GetBeverageTypes();
+            List<Brewery> breweries = await GetAllBreweries();
+            List<Brewery> breweriesToAdd = new List<Brewery>();
+
+            foreach (var b in info.response.beers.items.Select(a => a.brewery).GroupBy(a => a.brewery_id))
+            {
+                var brewery = b.First();
+                Brewery breweryToAdd = new Brewery();
+                if (!breweries.Any(a => a.Id == brewery.brewery_id))
+                {
+                    breweryToAdd = new Brewery()
+                    {
+                        City = brewery.location.brewery_city,
+                        Country = brewery.country_name,
+                        DateAdded = DateTime.Now,
+                        Facebook = string.Empty,
+                        Id = brewery.brewery_id,
+                        Logo = brewery.brewery_label,
+                        Name = brewery.brewery_name,
+                        Twitter = string.Empty,
+                        WebPage = string.Empty
+                    };
+                    breweries.Add(breweryToAdd);
+                    breweriesToAdd.Add(breweryToAdd);
+                }
+            }
+
+            await this.Context.Breweries.AddRangeAsync(breweriesToAdd);
+            await this.Context.SaveChangesAsync();
+
+            breweries = await GetAllBreweries();
+
+
+            int typeId = -1;
+            List<Beverage> toAdd = new List<Beverage>();
+            foreach (var beer in beers.items)
+            {
+                if (!bIds.Any(a => a == beer.beer.bid))
+                {
+                    Beverage beverageToAdd = new Beverage()
+                    {
+                        Accepted = true,
+                        AlcoholPercentage = Convert.ToDecimal(beer.beer.beer_abv),
+                        MajorGroup = 1,
+                        DateCreated = DateTime.Now,
+                        Description = beer.beer.beer_description,
+                        IBU = beer.beer.beer_ibu,
+                        Id = beer.beer.bid,
+                        IpAddress = "",
+                        LableMed = beer.beer.beer_label,
+                        LableSm = beer.beer.beer_label,
+                        ImageUrlSm = beer.beer.beer_label,
+                        ImageUrlMed = beer.beer.beer_label,
+                        Name = beer.beer.beer_name,
+                        UtappedRating = 0,
+                        Type = types.FirstOrDefault(a => a.Name == beer.beer.beer_style).Id,
+                        BreweryId = beer.brewery.brewery_id
+                    };
+
+                    toAdd.Add(beverageToAdd);
+                }
+            }
+
+            if (toAdd.Any())
+            {
+                await this.Context.Beverages.AddRangeAsync(toAdd);
+                await Context.SaveChangesAsync();
+            }
         }
 
         public async Task AddUnTappedBeer(UnTappedBeerInfo.Root info)

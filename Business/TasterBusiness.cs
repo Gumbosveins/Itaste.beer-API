@@ -112,6 +112,7 @@ namespace ItbApi.TaterBusiness
             if (!beers.Any() || forceUntapped)
             {
                 UnTappedBeerSearch.Root result = await UnTapped.SearchUnTapped(query);
+                await this.TasterDal.AddUnTappedBeers(result);
                 beersToReturn = result.response.beers.items.Select(a => new BeerVM(a)).ToList();
             }
             return beersToReturn;
