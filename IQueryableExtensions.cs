@@ -49,6 +49,15 @@ namespace ItbApi
                     .ThenInclude(a => a.BeverageType);
         }
 
+        public static IQueryable<Room> IncludeBeerAll(this IQueryable<Room> query)
+        {
+            return query
+                .Include(r => r.Room2Beverages)
+                    .ThenInclude(a => a.Beverage)
+                    .ThenInclude(a => a.Brewery);
+
+        }
+
         public static IQueryable<Brewery> IncludeAll(this IQueryable<Brewery> query)
         {
             return query

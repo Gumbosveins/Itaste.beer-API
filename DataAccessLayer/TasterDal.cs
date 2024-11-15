@@ -211,7 +211,7 @@ namespace ItbApi.DataAccessLayer
 
         public async Task<Result> UnlockBeer(string roomCode, int beerId)
         {
-            Room room = await Context.Rooms.IncludeAll().FirstOrDefaultAsync(a => a.Code == roomCode);
+            Room room = await Context.Rooms.IncludeBeerAll().FirstOrDefaultAsync(a => a.Code == roomCode);
             if (room == null)
                 return new Result(ResultStatus.ERROR, "Room not found");
 
