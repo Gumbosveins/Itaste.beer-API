@@ -316,26 +316,26 @@ namespace ItbApi.DataAccessLayer
             }
         }
 
-        public async Task<Result> AddReview(AddReviewRequest reqiest)
+        public async Task<Result> AddReview(AddReviewRequest request)
         {
             try
             {
-                User user = await Context.Users.IncludeAll().FirstOrDefaultAsync(a => a.Id == reqiest.userId);
+                User user = await Context.Users.IncludeAll().FirstOrDefaultAsync(a => a.Id == request.userId);
                 Room room = user.Room;
 
-                if (!room.Room2Beverages.Any(a => a.BeverageId == reqiest.beverageId))
+                if (!room.Room2Beverages.Any(a => a.BeverageId == request.beverageId))
                     return new Result(ResultStatus.ERROR, "Beverage not in current room");
 
-                if (room.Room2Beverages.Any(a => a.BeverageId == reqiest.beverageId && a.IsLocked))
+                if (room.Room2Beverages.Any(a => a.BeverageId == request.beverageId && a.IsLocked))
                     return new Result(ResultStatus.ERROR, "Beverage closed for reviewing");
 
-                if (reqiest.parts.Any(a => a.score < 0))
+                if (request.parts.Any(a => a.score < 0))
                     return new Result(ResultStatus.ERROR, "Score cannot be negative");
 
                 string resultmessage = "";
                 BeverageReview review = new BeverageReview();
                 decimal total = 0;
-                foreach (var part in reqiest.parts)
+                foreach (var part in request.parts)
                 {
                     var reviewType = room.Room2ReviewTypes.FirstOrDefault(a => a.ReviewTypeId == part.reviewTypeId);
                     total += (reviewType.MaxValue / 100m) * part.score;
@@ -343,10 +343,10 @@ namespace ItbApi.DataAccessLayer
 
                 total = Math.Round(total, 2);
 
-                if (!user.BeverageReviews.Any(a => a.BeverageId == reqiest.beverageId))
+                if (!user.BeverageReviews.Any(a => a.BeverageId == request.beverageId))
                 {
                     List<ReviewPart> partsToAdd = new List<ReviewPart>();
-                    partsToAdd.AddRange(reqiest.parts.Select(a => new ReviewPart()
+                    partsToAdd.AddRange(request.parts.Select(a => new ReviewPart()
                     {
                         ReviewTypeId = a.reviewTypeId,
                         Score = a.score
@@ -354,12 +354,12 @@ namespace ItbApi.DataAccessLayer
 
                     review = new BeverageReview()
                     {
-                        BeverageId = reqiest.beverageId,
+                        BeverageId = request.beverageId,
                         DateCreated = DateTime.Now,
                         RoomId = room.Id,
                         TotalScore = total,
                         ReviewParts = partsToAdd,
-                        Comment = reqiest.comment
+                        Comment = request.comment
                     };
                     user.BeverageReviews.Add(review);
 
@@ -367,12 +367,12 @@ namespace ItbApi.DataAccessLayer
                 }
                 else
                 {
-                    review = user.BeverageReviews.FirstOrDefault(a => a.BeverageId == reqiest.beverageId);
+                    review = user.BeverageReviews.FirstOrDefault(a => a.BeverageId == request.beverageId);
                     review.TotalScore = total;
-                    review.Comment = reqiest.comment;
+                    review.Comment = request.comment;
 
 
-                    foreach (var part in reqiest.parts)
+                    foreach (var part in request.parts)
                     {
                         ReviewPart p = review.ReviewParts.FirstOrDefault(a => a.ReviewTypeId == part.reviewTypeId);
                         p.Score = part.score;
@@ -382,7 +382,7 @@ namespace ItbApi.DataAccessLayer
                 }
 
                 await Context.SaveChangesAsync();
-                Beverage b = room.Room2Beverages.FirstOrDefault(a => a.BeverageId == reqiest.beverageId).Beverage;
+                Beverage b = room.Room2Beverages.FirstOrDefault(a => a.BeverageId == request.beverageId).Beverage;
                 List<ReviewTypeVM> types = room.Room2ReviewTypes.Select(a => new ReviewTypeVM(a)).ToList();
                 await NotificationService.PushReview(room.Code, new BeverageReviewVM(b, types, user, review));
 
