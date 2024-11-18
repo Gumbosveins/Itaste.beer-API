@@ -122,9 +122,16 @@ namespace ItbApi.DataAccessLayer
                 if (request.categories.Sum(a => a.maxValue) != 100)
                     return new Result(ResultStatus.ERROR, "Review types sum has to be 100");
 
-                if (request.categories.Any(a => a.isNew && (!string.IsNullOrEmpty(a.name) || !string.IsNullOrEmpty(a.abbr))))
-                    return new Result(ResultStatus.ERROR, "Your added categories are missing name or abbriviation");
-
+                if (request.categories.Any(a => a.isNew))
+                {
+                    foreach (var cat in request.categories.Where(a => a.isNew))
+                    {
+                        if (string.IsNullOrEmpty(cat.name) || string.IsNullOrEmpty(cat.abbr))
+                        {
+                            return new Result(ResultStatus.ERROR, "Your added categories are missing name or abbriviation");
+                        }
+                    }
+                } 
 
                 List<Beverage> beverages = await GetBeveragesByIds(request.beers.Select(a => a.id));
 
