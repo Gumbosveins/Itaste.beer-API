@@ -45,7 +45,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.WithOrigins("http://localhost:8090", "https://itaste.beer") // Replace with your actual frontend URL(s)
+        policy.WithOrigins("http://localhost:8090", "https://itaste.beer", "https://localhost:5001") // Replace with your actual frontend URL(s)
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials(); // Necessary for SignalR WebSockets with credentials

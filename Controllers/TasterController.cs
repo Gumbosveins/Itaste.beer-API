@@ -122,6 +122,7 @@ namespace ItbApi.Controllers
         {
             return await Business.SearchUnTapped(query ,force);
         }
+        
 
         [HttpGet, Route("GetReviewTypes")]
         public async Task<List<ReviewTypeForCreateVM>> GetReviewTypes()
