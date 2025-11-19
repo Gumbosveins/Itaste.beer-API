@@ -9,6 +9,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using ReviewerAPI.BeerHubs;
 using System.Text.Json;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
+using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +21,23 @@ builder.Services.AddSignalR();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Itaste.beer API",
+        Version = "v1",
+        Description = "Public API for Itaste.beer."
+    });
+
+    // Use full type names to avoid schema ID collisions
     options.CustomSchemaIds(type => type.FullName);
+
+    // Include XML comments (enable in csproj) for richer Swagger docs
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    if (File.Exists(xmlPath))
+    {
+        options.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
+    }
 });
 
 // Configure CORS
@@ -62,12 +81,13 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 
 var app = builder.Build();
 
-// Enable Swagger and Swagger UI only in Development
-if (app.Environment.IsDevelopment())
+// Enable Swagger and Swagger UI in all environments
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Itaste.beer API v1");
+    c.RoutePrefix = "swagger"; // UI at /swagger
+});
 
 // Configure Middleware
 app.UseCors("AllowAll"); // Ensure CORS is configured before routing
