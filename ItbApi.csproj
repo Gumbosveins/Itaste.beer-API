@@ -5,6 +5,10 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>dea12986-4cdf-4fd3-94e8-ef3490e86911</UserSecretsId>
+    <!-- Generate XML docs so Swagger can include XML comments -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- Suppress 'missing XML comment' warnings to keep builds clean -->
+    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

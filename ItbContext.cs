@@ -42,6 +42,64 @@ namespace ItbApi
                 .HasForeignKey(br => br.RoomId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<ReviewType>().HasData(new List<ReviewType>()
+            {
+                new ReviewType()
+                {
+                    Id = 1,
+                    Name = "Bottle Design",
+                    Accepted = true,
+                    IpAddress = "System",
+                    DateAdded = DateTime.UtcNow,
+                    Abbr = "BD"
+                },
+                new ReviewType()
+                {
+                    Id = 2,
+                    Name = "Look in Glass",
+                    Accepted = true,
+                    IpAddress = "System",
+                    DateAdded = DateTime.UtcNow,
+                    Abbr = "LIG"
+                },
+                new ReviewType()
+                {
+                    Id = 3,
+                    Name = "Smell / Aroma",
+                    Accepted = true,
+                    IpAddress = "System",
+                    DateAdded = DateTime.UtcNow,
+                    Abbr = "SM / A"
+                },
+                new ReviewType()
+                {
+                    Id = 4,
+                    Name = "Taste",
+                    Accepted = true,
+                    IpAddress = "System",
+                    DateAdded = DateTime.UtcNow,
+                    Abbr = "TST"
+                },
+                new ReviewType()
+                {
+                    Id = 5,
+                    Name = "Mouthfeel",
+                    Accepted = true,
+                    IpAddress = "System",
+                    DateAdded = DateTime.UtcNow,
+                    Abbr = "MF"
+                },
+                new ReviewType()
+                {
+                    Id = 6,
+                    Name = "After Taste",
+                    Accepted = true,
+                    IpAddress = "System",
+                    DateAdded = DateTime.UtcNow,
+                    Abbr = "AT"
+                }
+            });
+
             // Call base method if needed
             base.OnModelCreating(modelBuilder);
         }
