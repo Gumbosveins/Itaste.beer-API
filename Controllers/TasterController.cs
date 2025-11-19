@@ -25,6 +25,12 @@ namespace ItbApi.Controllers
         public IHttpContextAccessor HttpContextAccessor { get; } = _httpContextAccessor;
         public INotificationService NotificationService { get; } = notificationService;
 
+        [HttpGet, Route("Test")]
+        public string Test()
+        {
+            return "Vei";
+        }
+        
         [HttpPost, Route("JoinRoom")]
         public async Task<JoinRoomResponse> JoinRoom(JoinRoomRequest request)
         {
