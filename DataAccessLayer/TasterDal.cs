@@ -40,7 +40,7 @@ namespace ItbApi.DataAccessLayer
         {
             try
             {
-                Room roomToJoin = Context.Rooms.IncludeAll().FirstOrDefault(a => a.Code == request.roomCode);
+                Room roomToJoin = Context.Rooms.IncludeAll().FirstOrDefault(a => a.Code == request.roomCode.ToUpper());
                 if (roomToJoin == null)
                     return new JoinRoomResponse(ResultStatus.ERROR, "Room code or pin is incorrect");
 
@@ -56,7 +56,7 @@ namespace ItbApi.DataAccessLayer
                 await Context.Users.AddAsync(new User()
                 {
                     Id = userId,
-                    DateCreated = DateTime.Now,
+                    DateCreated = DateTime.UtcNow,
                     IsOwner = false,
                     Name = request.username,
                     RoomId = roomToJoin.Id,
@@ -90,17 +90,17 @@ namespace ItbApi.DataAccessLayer
 
         public async Task<bool> IsRoomCodeTaken(string roomCode)
         {
-            return await Context.Rooms.AnyAsync(a => a.Code == roomCode);
+            return await Context.Rooms.AnyAsync(a => a.Code == roomCode.ToUpper());
         }
 
         public async Task<Room> GetRoomByCodeAndPin(string code, int pin)
         {
-            return await Context.Rooms.IncludeAll().FirstOrDefaultAsync(a => a.Code == code && a.Pin == pin);
+            return await Context.Rooms.IncludeAll().FirstOrDefaultAsync(a => a.Code == code.ToUpper() && a.Pin == pin);
         }
 
         public async Task<List<Beverage>> SearchForBeers(string query)
         {
-            return await Context.Beverages.IncludeAll().Where(a => a.Name.Contains(query) || a.Brewery.Name.Contains(query)).ToListAsync();
+            return await Context.Beverages.IncludeAll().Where(a => EF.Functions.ILike(a.Name, $"%{query}%") || EF.Functions.ILike(a.Brewery.Name, $"%{query}%")).ToListAsync();
         }
 
         public async Task<List<Beverage>> GetBeveragesByIds(IEnumerable<int> beverageIds)
@@ -112,7 +112,7 @@ namespace ItbApi.DataAccessLayer
         {
             try
             {
-                Room room = await Context.Rooms.IncludeAll().FirstOrDefaultAsync(a => a.Code == request.roomCode);
+                Room room = await Context.Rooms.IncludeAll().FirstOrDefaultAsync(a => a.Code == request.roomCode.ToUpper());
                 if (room == null)
                     return new Result(ResultStatus.ERROR, "Room not found!");
 
@@ -170,7 +170,7 @@ namespace ItbApi.DataAccessLayer
                 {
                     if (!reviewtypes.Any(a => a.Id == type.id))
                     {
-                        AddReviewType(new AddNewReviewType()
+                        await AddReviewType(new AddNewReviewType()
                         {
                             name = type.name,
                             ipAddress = request.ipAddress,
@@ -199,7 +199,7 @@ namespace ItbApi.DataAccessLayer
 
         public async Task<ReviewResults> FinishReview(string roomCode, int beerId)
         {
-            Room room = await Context.Rooms.IncludeAll().FirstOrDefaultAsync(a => a.Code == roomCode);
+            Room room = await Context.Rooms.IncludeAll().FirstOrDefaultAsync(a => a.Code == roomCode.ToUpper());
             Room2Beverage beer = room.Room2Beverages.FirstOrDefault(a => a.BeverageId == beerId);
             List<BeverageReview> reviews = room.BeverageReviews.Where(a => a.BeverageId == beerId).ToList();
             if (!reviews.Any())
@@ -218,7 +218,7 @@ namespace ItbApi.DataAccessLayer
 
         public async Task<Result> UnlockBeer(string roomCode, int beerId)
         {
-            Room room = await Context.Rooms.IncludeBeerAll().FirstOrDefaultAsync(a => a.Code == roomCode);
+            Room room = await Context.Rooms.IncludeBeerAll().FirstOrDefaultAsync(a => a.Code == roomCode.ToUpper());
             if (room == null)
                 return new Result(ResultStatus.ERROR, "Room not found");
 
@@ -246,7 +246,7 @@ namespace ItbApi.DataAccessLayer
                 await Context.Beverages.AddAsync(new Beverage()
                 {
                     AlcoholPercentage = request.alcaholPercent,
-                    DateCreated = DateTime.Now,
+                    DateCreated = DateTime.UtcNow,
                     ImageUrlSm = request.imageUrl,
                     Name = request.name,
                     MajorGroup = request.majorGroupId,
@@ -273,7 +273,7 @@ namespace ItbApi.DataAccessLayer
                 await Context.ReviewTypes.AddAsync(new ReviewType()
                 {
                     Accepted = false,
-                    DateAdded = DateTime.Now,
+                    DateAdded = DateTime.UtcNow,
                     IpAddress = request.ipAddress,
                     Name = request.name,
                     Abbr = request.abbr
@@ -309,7 +309,7 @@ namespace ItbApi.DataAccessLayer
         {
             try
             {
-                Room room = await Context.Rooms.IncludeAll().FirstOrDefaultAsync(a => a.Code == roomCode && a.Pin == pin);
+                Room room = await Context.Rooms.IncludeAll().FirstOrDefaultAsync(a => a.Code == roomCode.ToUpper() && a.Pin == pin);
                 if (room == null)
                     return new UserRoomModel(ResultStatus.ERROR, "Room code or pin is incorrect");
 
@@ -362,7 +362,7 @@ namespace ItbApi.DataAccessLayer
                     review = new BeverageReview()
                     {
                         BeverageId = request.beverageId,
-                        DateCreated = DateTime.Now,
+                        DateCreated = DateTime.UtcNow,
                         RoomId = room.Id,
                         TotalScore = total,
                         ReviewParts = partsToAdd,
@@ -453,7 +453,7 @@ namespace ItbApi.DataAccessLayer
                     {
                         City = brewery.location.brewery_city,
                         Country = brewery.country_name,
-                        DateAdded = DateTime.Now,
+                        DateAdded = DateTime.UtcNow,
                         Facebook = string.Empty,
                         Id = brewery.brewery_id,
                         Logo = brewery.brewery_label,
@@ -483,7 +483,7 @@ namespace ItbApi.DataAccessLayer
                         Accepted = true,
                         AlcoholPercentage = Convert.ToDecimal(beer.beer.beer_abv),
                         MajorGroup = 1,
-                        DateCreated = DateTime.Now,
+                        DateCreated = DateTime.UtcNow,
                         Description = beer.beer.beer_description,
                         IBU = beer.beer.beer_ibu,
                         Id = beer.beer.bid,
@@ -537,7 +537,7 @@ namespace ItbApi.DataAccessLayer
                 {
                     City = beer.brewery.location.brewery_city,
                     Country = beer.brewery.country_name,
-                    DateAdded = DateTime.Now,
+                    DateAdded = DateTime.UtcNow,
                     Facebook = beer.brewery.contact.facebook,
                     Id = beer.brewery.brewery_id,
                     Logo = beer.brewery.brewery_label,
@@ -558,7 +558,7 @@ namespace ItbApi.DataAccessLayer
                     Accepted = true,
                     AlcoholPercentage = Convert.ToDecimal(beer.beer_abv),
                     MajorGroup = 1,
-                    DateCreated = DateTime.Now,
+                    DateCreated = DateTime.UtcNow,
                     Description = beer.beer_description,
                     IBU = beer.beer_ibu,
                     Id = beer.bid,

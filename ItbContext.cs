@@ -20,12 +20,10 @@ namespace ItbApi
         public DbSet<ReviewPart> ReviewParts { get; set; }
         public DbSet<Room2Beverage> Room2Beverages { get; set; }
 
+        private static readonly DateTime SeedDate = new DateTime(2025, 11, 19, 0, 0, 0, DateTimeKind.Utc);
+
         public ItbContext(DbContextOptions<ItbContext> options) : base(options) { }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer();
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -50,7 +48,7 @@ namespace ItbApi
                     Name = "Bottle Design",
                     Accepted = true,
                     IpAddress = "System",
-                    DateAdded = DateTime.UtcNow,
+                    DateAdded = SeedDate,
                     Abbr = "BD"
                 },
                 new ReviewType()
@@ -59,7 +57,7 @@ namespace ItbApi
                     Name = "Look in Glass",
                     Accepted = true,
                     IpAddress = "System",
-                    DateAdded = DateTime.UtcNow,
+                    DateAdded = SeedDate,
                     Abbr = "LIG"
                 },
                 new ReviewType()
@@ -68,7 +66,7 @@ namespace ItbApi
                     Name = "Smell / Aroma",
                     Accepted = true,
                     IpAddress = "System",
-                    DateAdded = DateTime.UtcNow,
+                    DateAdded = SeedDate,
                     Abbr = "SM / A"
                 },
                 new ReviewType()
@@ -77,7 +75,7 @@ namespace ItbApi
                     Name = "Taste",
                     Accepted = true,
                     IpAddress = "System",
-                    DateAdded = DateTime.UtcNow,
+                    DateAdded = SeedDate,
                     Abbr = "TST"
                 },
                 new ReviewType()
@@ -86,7 +84,7 @@ namespace ItbApi
                     Name = "Mouthfeel",
                     Accepted = true,
                     IpAddress = "System",
-                    DateAdded = DateTime.UtcNow,
+                    DateAdded = SeedDate,
                     Abbr = "MF"
                 },
                 new ReviewType()
@@ -95,10 +93,16 @@ namespace ItbApi
                     Name = "After Taste",
                     Accepted = true,
                     IpAddress = "System",
-                    DateAdded = DateTime.UtcNow,
+                    DateAdded = SeedDate,
                     Abbr = "AT"
                 }
             });
+
+            modelBuilder.Entity<BeverageGroup>().HasData(
+                new BeverageGroup { Id = 1, Name = "Beer", DisplayOrder = 0 },
+                new BeverageGroup { Id = 2, Name = "Wine", DisplayOrder = 1 },
+                new BeverageGroup { Id = 3, Name = "Whiskey", DisplayOrder = 2 },
+                new BeverageGroup { Id = 4, Name = "Cognac", DisplayOrder = 3 });
 
             // Call base method if needed
             base.OnModelCreating(modelBuilder);

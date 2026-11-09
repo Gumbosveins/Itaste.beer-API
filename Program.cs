@@ -1,4 +1,4 @@
-using ItbApi;
+﻿using ItbApi;
 using ItbApi.DataAccessLayer;
 using ItbApi.Helpers;
 using ItbApi.Settings;
@@ -14,6 +14,13 @@ using System.Reflection;
 using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Railway injects PORT; bind to it when present
+var port = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrEmpty(port))
+{
+    builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+}
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -45,7 +52,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.WithOrigins("http://localhost:8090", "https://itaste.beer", "https://localhost:5001") // Replace with your actual frontend URL(s)
+        var origins = (builder.Configuration.GetValue<string>("CORS_ORIGINS")
+                ?? "https://itaste.beer,https://www.itaste.beer,http://localhost:5173")
+            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        policy.WithOrigins(origins)
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials(); // Necessary for SignalR WebSockets with credentials
@@ -63,8 +73,14 @@ if (untappedSettings is null)
     throw new Exception("Untapped Settings missing in configuration");
 }
 
+var databaseUrl = configuration.GetValue<string>("DATABASE_URL") ?? configuration.GetValue<string>("DBURL");
+if (string.IsNullOrWhiteSpace(databaseUrl))
+{
+    throw new Exception("DATABASE_URL missing in configuration");
+}
+
 builder.Services.AddDbContext<ItbContext>(options =>
-    options.UseSqlServer(configuration.GetValue<string>("DBURL")));
+    options.UseNpgsql(ConnectionStrings.FromDatabaseUrl(databaseUrl)));
 
 // Register settings and services with DI
 builder.Services.AddSingleton(untappedSettings);
@@ -81,6 +97,11 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    scope.ServiceProvider.GetRequiredService<ItbContext>().Database.Migrate();
+}
+
 // Enable Swagger and Swagger UI in all environments
 app.UseSwagger();
 app.UseSwaggerUI(c =>
@@ -91,8 +112,9 @@ app.UseSwaggerUI(c =>
 
 // Configure Middleware
 app.UseCors("AllowAll"); // Ensure CORS is configured before routing
-app.UseHttpsRedirection();
 app.UseRouting();
+
+app.MapGet("/health", () => Results.Ok("ok"));
 
 // Endpoint Configuration
 app.UseEndpoints(endpoints =>

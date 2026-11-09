@@ -42,7 +42,7 @@ namespace ItbApi.TaterBusiness
             Room roomToAdd = new Room()
             {
                 Code = roomCode,
-                DateCreated = DateTime.Now,
+                DateCreated = DateTime.UtcNow,
                 Name = request.roomName,
                 Pin = request.pin,
                 Owner = "",
@@ -64,7 +64,7 @@ namespace ItbApi.TaterBusiness
             User userToAdd = new User()
             {
                 IsOwner = false,
-                DateCreated = DateTime.Now,
+                DateCreated = DateTime.UtcNow,
                 Name = request.username,
                 RoomId = roomToJoin.Id
             };
