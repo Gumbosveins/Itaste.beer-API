@@ -46,5 +46,16 @@ namespace ReviewerAPI.BeerHubs
             var result = new { beerId, finalScore };
             await _hubContext.Clients.Group("UserRoom:" + roomCode.ToLower()).SendAsync("PushFinalScore", result);
         }
+
+        public async Task RoomUpdated(string roomCode)
+        {
+            string code = roomCode.ToLower();
+            await _hubContext.Clients.Groups("Room:" + code, "UserRoom:" + code).SendAsync("RoomUpdated");
+        }
+
+        public async Task UserRemoved(string roomCode, Guid userId)
+        {
+            await _hubContext.Clients.Group("UserRoom:" + roomCode.ToLower()).SendAsync("UserRemoved", userId);
+        }
     }
 }

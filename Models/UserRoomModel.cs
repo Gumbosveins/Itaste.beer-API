@@ -221,6 +221,11 @@
         public ReviewResults(List<BeverageReviewVM> results, List<ReviewTypeVM> types)
         {
             results = results.Where(a => a.includeInCalculations).ToList();
+            partResults = new List<ReviewCategoryResult>();
+            if (!results.Any())
+            {
+                return;
+            }
             totalScore = results.Average(a => a.totalScore);
             var grouped = results.SelectMany(a => a.parts).GroupBy(a => a.reviewTypeId).ToList();
             partResults = new List<ReviewCategoryResult>();

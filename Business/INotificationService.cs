@@ -10,5 +10,7 @@ namespace ReviewerAPI.BeerHubs
         Task OpenBeerForUser(string roomCode, int beerId);
         Task PushFinalScore(string roomCode, int beerId, decimal finalScore);
         Task PushReview(string roomCode, BeverageReviewVM model);
+        Task RoomUpdated(string roomCode);
+        Task UserRemoved(string roomCode, Guid userId);
     }
 }

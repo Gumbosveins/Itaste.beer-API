@@ -13,7 +13,6 @@ namespace ItbApi.DataAccessLayer
         Task AddUnTappedBeers(UnTappedBeerSearch.Root info);
         Task<CreateRoomResult> CreateRoom(Room roomToAdd);
         Task<Result> CreateUser(User user);
-        Task<Result> DeleteUser(DeleteUserRequest request);
         Task<ReviewResults> FinishReview(string roomCode, int beerId);
         Task<Result> FinishRoomCreation(FinishRoomSettings.Root request);
         Task<List<Brewery>> GetAllBreweries();
