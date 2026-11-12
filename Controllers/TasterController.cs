@@ -37,13 +37,6 @@ namespace ItbApi.Controllers
             return await Dal.JoinRoom(request);
         }
 
-        [HttpPost("DeleteUser")]
-        public async Task<IActionResult> DeleteUser([FromBody] DeleteUserRequest request)
-        {
-            Result result = await Dal.DeleteUser(request);
-            return ApiTools.CreateResponse(result);
-        }
-
 
         [HttpPost, Route("CreateRoom")]
         public async Task<IActionResult> CreateRoom(CreateRoomRequest request)

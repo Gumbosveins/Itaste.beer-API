@@ -603,20 +603,5 @@ namespace ItbApi.DataAccessLayer
         {
             return await Context.ReviewTypes.Where(a => a.Accepted).OrderBy(a => a.Name).Select(a => new ReviewTypeForCreateVM(a)).ToListAsync();
         }
-
-        public async Task<Result> DeleteUser(DeleteUserRequest request)
-        {
-            try
-            {
-                User user = await Context.Users.FirstOrDefaultAsync(a => a.Id == request.userId);
-                Context.Users.Remove(user);
-                await Context.SaveChangesAsync();
-                return new Result(ResultStatus.SUCCESS, "User Deleted");
-            }
-            catch (Exception ex)
-            {
-                return new Result(ResultStatus.ERROR, ex.Message);
-            }
-        }
     }
 }

@@ -87,6 +87,7 @@ builder.Services.AddSingleton(untappedSettings);
 builder.Services.TryAddScoped<IUnTapped, UnTapped>();
 builder.Services.TryAddScoped<ITasterBusiness, TasterBusiness>();
 builder.Services.TryAddScoped<ITasterDal, TasterDal>();
+builder.Services.TryAddScoped<IRoomEditDal, RoomEditDal>();
 builder.Services.TryAddScoped<INotificationService, NotificationService>();
 builder.Services.AddSignalR();
 
